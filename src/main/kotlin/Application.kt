@@ -17,7 +17,7 @@ class Application {
     fun start() {
         val menuScreen = MenuScreen(prevScreen = null, application = this)
         currentScreen = menuScreen
-        inputHandler.loop()
+        inputHandler.getCommand()
     }
 
     fun goBack() {

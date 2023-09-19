@@ -11,7 +11,7 @@ class InputHandler(val application: Application) {
         return input
     }
 
-    fun loop() {
+    fun getCommand() {
         while (true) {
             if (application.isFinished()) {
                 application.finish()
@@ -21,6 +21,7 @@ class InputHandler(val application: Application) {
             val limit = application.currentScreen?.getLastCommandIndex() ?: 0
             val commandIndex = validate(input, limit)
             if (commandIndex == INVALID_COMMAND_INDEX) {
+                application.currentScreen?.startScreen()
                 continue
             }
             application.currentScreen?.executeCommand(commandIndex)
@@ -28,10 +29,14 @@ class InputHandler(val application: Application) {
     }
 
     private fun validate(input: String, limit: Int): Int {
+        if (input.isBlank()) {
+            println("Строка не должна оставаться пустой. Пожалуйста введите номер команды")
+            return INVALID_COMMAND_INDEX
+        }
         val commandIndex = input.toIntOrNull()
         return when (commandIndex) {
             null -> {
-                println("Вы ввели некоретное число попробуйте еще раз")
+                println("Пожалуйста введите номер команды цифрой")
                 INVALID_COMMAND_INDEX
             }
 
